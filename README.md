@@ -9,8 +9,8 @@ For more information on VulnCheck, please visit their [official website](https:/
 ### VulnCheck API URL
 The base URL of the VulnCheck API including the schema (i.e., https://)
 
-### Secret Key
-Your Secret Key
+### API Token
+Your API Token
 
 ## Installation Instructions
 

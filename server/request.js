@@ -15,98 +15,33 @@ const {
   requests: { createRequestWithDefaults }
 } = require('polarity-integration-utils');
 const config = require('../config/config');
-const { DateTime } = require('luxon');
-const NodeCache = require('node-cache');
-const tokenCache = new NodeCache();
-
-const requestForAuth = createRequestWithDefaults({
-  config,
-  roundedSuccessStatusCodes: [200],
-  requestOptionsToOmitFromLogsKeyPaths: [
-    'headers.Authorization',
-    'form.secret_key',
-    'body.data.access_token'
-  ],
-  postprocessRequestFailure: (error) => {
-    error.message = `Authentication Failed: Check Credentials and Try Again - (${error.status})`;
-
-    throw error;
-  }
-});
 
 const requestWithDefaults = createRequestWithDefaults({
   config,
   roundedSuccessStatusCodes: [200],
-  requestOptionsToOmitFromLogsKeyPaths: ['headers.Authorization', 'form.secret_key'],
-  preprocessRequestOptions: async ({ route, options, ...requestOptions }) => {
-    const token = await getAuthToken(options);
+  requestOptionsToOmitFromLogsKeyPaths: ['headers.Authorization'],
+  preprocessRequestOptions: async ({ route, options, ...requestOptions }) => ({
+    ...requestOptions,
+    url: `${options.url}/v3/${route}`,
+    headers: {
+      'User-Agent': 'Polarity Integration',
+      cookie: `token=${options.apiToken}`
+    },
+    json: true
+  })
+  // postprocessRequestFailure: (error) => {
+  //   try {
+  //     const errorResponseBody = JSON.parse(error.description);
+  //     error.message = `${error.message} - (${error.status})${
+  //       errorResponseBody.message || errorResponseBody.error
+  //         ? `| ${errorResponseBody.message || errorResponseBody.error}`
+  //         : ''
+  //     }`;
+  //   } catch (_) {}
 
-    return {
-      ...requestOptions,
-      url: `${options.url}/api/v1/${route}`,
-      headers: {
-        Authorization: token
-      },
-      json: true
-    };
-  },
-  postprocessRequestResponse: async (response, requestOptions) => {
-    const nextPageNumber = get('body.data.next', response);
-    if (nextPageNumber && get('body.data.results', response) <= 30) {
-      const nextPageResults = get(
-        'body.data.results',
-        await requestWithDefaults({
-          ...requestOptions,
-          qs: { ...requestOptions.qs, from: nextPageNumber }
-        })
-      );
-
-      response.body.data.results = [...response.body.data.results, ...nextPageResults];
-    }
-
-    return response;
-  },
-  postprocessRequestFailure: (error) => {
-    const errorResponseBody = JSON.parse(error.description);
-    error.message = `${error.message} - (${error.status})${
-      errorResponseBody.message || errorResponseBody.error
-        ? `| ${errorResponseBody.message || errorResponseBody.error}`
-        : ''
-    }`;
-
-    throw error;
-  }
+  //   throw error;
+  // }
 });
-
-const getAuthToken = async ({ url, secretKey }) => {
-  const cachedToken = tokenCache.get(secretKey);
-  if (cachedToken) return cachedToken;
-
-  const { access_token, expiration_utc } = get(
-    'body.data',
-    await requestForAuth({
-      method: 'POST',
-      url: `${url}/api/v1/access_token/`,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      form: { secret_key: secretKey },
-      json: true
-    })
-  );
-
-  const tokenResetSeconds =
-    Math.abs(
-      Math.round(
-        DateTime.utc().diff(DateTime.fromISO(expiration_utc, { zone: 'utc' }), 'seconds')
-          .seconds
-      )
-    ) - 10;
-
-  tokenCache.set(secretKey, access_token, tokenResetSeconds);
-
-  return access_token;
-};
 
 const createRequestsInParallel =
   (requestWithDefaults) =>

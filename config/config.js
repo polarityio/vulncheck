@@ -2,7 +2,7 @@ module.exports = {
   name: 'VulnCheck',
   acronym: 'VC',
   description: 'TODO',
-  entityTypes: ['IPv4', 'IPv6', 'url', 'domain', 'cve', 'email', 'MAC'],
+  entityTypes: ['cve'],
   defaultColor: 'light-blue',
   onDemandOnly: true,
   styles: ['./client/styles.less'],
@@ -30,15 +30,15 @@ module.exports = {
       name: 'VulnChck API URL',
       description:
         'The base URL of the VulnChck API including the scheme (i.e., https://)',
-      default: '',
+      default: 'https://api.vulncheck.com',
       type: 'text',
       userCanEdit: false,
       adminOnly: true
     },
     {
-      key: 'secretKey',
-      name: 'Secret Key',
-      description: 'Your Secret Key',
+      key: 'apiToken',
+      name: 'API Token',
+      description: 'Your API Token',
       default: '',
       type: 'password',
       userCanEdit: false,
