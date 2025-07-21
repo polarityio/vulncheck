@@ -1,40 +1,68 @@
 {
   "name": "VulnCheck",
   "acronym": "VC",
-  "description": "TODO",
-  "entityTypes": ["cve"],
-  "defaultColor": "light-blue",
-  "onDemandOnly": true,
-  "styles": ["./client/styles.less"],
+  "description": "VulnCheck is a cyber threat intelligence provider that provides exploit and vulnerability intelligence to organizations",
+  "entityTypes": [
+    "IPv4",
+    "cve"
+  ],
+  "styles": [
+    "./styles/vc.less"
+  ],
   "block": {
     "component": {
-      "file": "./client/block.js"
+      "file": "./components/vc-block.js"
     },
     "template": {
-      "file": "./client/block.hbs"
+      "file": "./templates/vc-block.hbs"
     }
   },
+  "summary": {
+    "component": {
+      "file": "./components/summary.js"
+    },
+    "template": {
+      "file": "./templates/summary.hbs"
+    }
+  },
+  "defaultColor": "light-pink",
+  "request": {
+    "cert": "",
+    "key": "",
+    "passphrase": "",
+    "ca": "",
+    "proxy": ""
+  },
   "logging": {
-    "level": "info"
+    "level": "trace"
   },
   "options": [
     {
-      "key": "url",
-      "name": "VulnChck API URL",
-      "description": "The base URL of the VulnChck API including the scheme (i.e., https://)",
-      "default": "https://api.vulncheck.com",
+      "key": "subscriptionUrl",
+      "name": "VulnCheck API URL",
+      "description": "The base URL to the GreyNoise API you wish to use. Defaults to \"https://api.vulncheck.com/\".",
+      "default": "https://api.vulncheck.com/",
       "type": "text",
       "userCanEdit": false,
       "adminOnly": true
     },
     {
-      "key": "apiToken",
-      "name": "API Token",
-      "description": "Your API Token",
+      "key": "apiKey",
+      "name": "API Key",
+      "description": "Account API key used to access VulnCheck API.",
       "default": "",
       "type": "password",
-      "userCanEdit": false,
-      "adminOnly": true
+      "userCanEdit": true,
+      "adminOnly": false
+    },
+    {
+      "key": "premiumApi",
+      "name": "Search using the Premium API",
+      "description": "If checked, the integration will search indices available to premium subscription accountss.  When unchecked, the VulnCheck Community indices will be used (only supports CVE lookups)",
+      "default": false,
+      "type": "boolean",
+      "userCanEdit": true,
+      "adminOnly": false
     }
   ]
 }
