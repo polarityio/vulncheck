@@ -1,5 +1,5 @@
 # Polarity VulnCheck Integration
-The Polarity - VulnCheck integration searches CVEs in VulnCheck for CVE details, Expolit Data, and Threat Actor Attribution on your screen.  The details are then displayed via the Polarity Overlay Window, and we support the VulnCheck Community API out of the box if you do not already have an Premium API Key.
+The Polarity - VulnCheck integration searches CVEs in VulnCheck for CVE details, Exploit Data, and Threat Actor Attribution on your screen.  The details are then displayed via the Polarity Overlay Window, and we support the VulnCheck Community API out of the box if you do not already have a Premium API Key.
 
 Sign up for a free VulnCheck Community API key here https://www.vulncheck.com/community
 
