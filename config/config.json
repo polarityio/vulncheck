@@ -17,15 +17,8 @@
     }
   },
   "defaultColor": "light-pink",
-  "request": {
-    "cert": "",
-    "key": "",
-    "passphrase": "",
-    "ca": "",
-    "proxy": ""
-  },
   "logging": {
-    "level": "trace"
+    "level": "info"
   },
   "options": [
     {
