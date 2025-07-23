@@ -288,8 +288,19 @@ function handleRestError(error, entity, res, body) {
     };
   } else if (res.statusCode === 429) {
     result = {
-      entity: entity,
-      body: null
+      entity,
+      statusCode: res ? res.statusCode : 'Unknown',
+      error: 'API Limit Reached',
+      detail: 'API Limit Reached',
+      body
+    };
+  } else if (res.statusCode === 401) {
+    result = {
+      entity,
+      statusCode: res ? res.statusCode : 'Unknown',
+      error: 'Invalid API Key',
+      detail: 'Invalid API Key',
+      body
     };
   } else {
     result = {
