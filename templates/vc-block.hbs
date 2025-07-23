@@ -1,0 +1,371 @@
+
+{{#unless block.isLoadingDetails}}
+  <div class="d-flex align-items-center justify-content-end copy-btn-container">
+    <button class="btn copy-btn p-action" {{action "copyData"}} title="Copy information to Clipboard">
+      {{fa-icon icon="clipboard" fixedWidth=true}}
+    </button>
+    <div class="copy-success-message {{if showCopyMessage 'visible' 'hidden'}}">
+      {{fa-icon icon="check" fixedWidth=true class="copy-success-icon"}}
+      {{#if (eq activeTab "details")}}
+        Copied Details Data
+      {{else if (eq activeTab "exploits")}}
+        Copied Exploit Data
+      {{else}}
+        Copied Threat Actor Data
+      {{/if}}
+    </div>
+  </div>
+{{/unless}}
+
+<div>
+  <span class="p-title">{{details.id}}</span>
+  <a href="https://vulncheck.com/cve/{{details.id}}" class="p-link">
+    View Vulnerability in VulnCheck
+    {{fa-icon icon="external-link-square" class="external-link-icon"}}
+  </a>
+</div>
+
+<ul class="nav nav-tabs mt-2">
+  <li class="nav-item">
+    <a {{action "changeTab" "details"}} class="nav-link {{if (eq activeTab 'details') 'active'}}" href="#">
+      Details
+    </a>
+  </li>
+  <li class="nav-item">
+    <a {{action "changeTab" "exploits"}} class="nav-link {{if (eq activeTab 'exploits') 'active'}}" href="#">
+      Exploits
+    </a>
+  </li>
+  {{#if (eq details.apiService "premium")}}
+    <li class="nav-item">
+      <a {{action "changeTab" "threatActors"}} class="nav-link {{if (eq activeTab 'threatActors') 'active'}}" href="#">
+      Threat Actors
+      </a>
+    </li>
+  {{/if}}
+</ul>
+
+<div id="{{concat 'vulncheck-container-' uniqueIdPrefix}}" class="export-node">
+  {{#if (eq activeTab "details")}}
+    {{! Start of Community CVE Display }}
+    {{#if (eq block.entity.type "cve")}}
+      {{#if details.limitHit}}
+        <h1 class="p-title">{{fa-icon icon="info" fixedWidth=true}} API Limit Hit</h1>
+      {{else}}
+        <div>
+          <span class="p-title">VulnCheck Summary</span>
+          <div class="mb-2">
+            {{#if details.vulnStatus}}
+              <div>
+                <span class="p-key">Status: </span>
+                <span class="p-value">{{details.vulnStatus}}</span>
+              </div>
+            {{/if}}
+            {{#if details.sourceIdentifier}}
+              <div>
+                <span class="p-key">Source: </span>
+                <span class="p-value">{{details.sourceIdentifier}}</span>
+              </div>
+            {{/if}}
+            {{#if details.published}}
+              <div>
+                <span class="p-key">Published: </span>
+                <span class="p-value">{{details.published}}</span>
+              </div>
+            {{/if}}
+            {{#if details.lastModified}}
+              <div>
+                <span class="p-key">Last Modified: </span>
+                <span class="p-value">{{details.lastModified}}</span>
+              </div>
+            {{/if}}
+            {{#if details.description}}
+              <div>
+                <span class="p-key">Description: </span>
+                <div class="p-block">{{details.description}}</div>
+              </div>
+            {{/if}}
+            {{#if details.metrics.cvssMetricV40}}
+              <div>
+                <span class="p-title">CVSS v4 Details</span>
+                <span class="p-key">CVSS Base Score: </span>
+                <span class="p-value">{{details.metrics.cvssMetricV40.0.cvssData.baseScore}}</span>
+                <br>
+                <span class="p-key">CVSS Base Severity : </span>
+                <span class="p-value">{{details.metrics.cvssMetricV40.0.cvssData.baseSeverity}}</span>
+                <br>
+                <span class="p-key">CVSS Vector String: </span>
+                <span class="p-value">{{details.metrics.cvssMetricV40.0.cvssData.vectorString}}</span>
+              </div>
+            {{else if details.metrics.cvssMetricV31}}
+              <div>
+                <span class="p-title">CVSS v3.1 Details</span>
+                <span class="p-key">CVSS Base Score: </span>
+                <span class="p-value">{{details.metrics.cvssMetricV31.0.cvssData.baseScore}}</span>
+                <br>
+                <span class="p-key">CVSS Base Severity : </span>
+                <span class="p-value">{{details.metrics.cvssMetricV31.0.cvssData.baseSeverity}}</span>
+                <br>
+                <span class="p-key">CVSS Vector String: </span>
+                <span class="p-value">{{details.metrics.cvssMetricV31.0.cvssData.vectorString}}</span>
+                <br>
+                <span class="p-key">CVSS Exploitability Score: </span>
+                <span class="p-value">{{details.metrics.cvssMetricV31.0.exploitabilityScore}}</span>
+                <br>
+                <span class="p-key">CVSS Impact Score: </span>
+                <span class="p-value">{{details.metrics.cvssMetricV31.0.impactScore}}</span>
+              </div>
+            {{else if details.cvssV2Data}}
+              <div>
+                <span class="p-title">CVSS v2 Details</span>
+              </div>
+              {{#each details.cvssV2Data}}
+                <div>
+                  <span class="p-key">{{@key}}: </span>
+                  <span class="p-value">{{@this}}</span>
+                </div>
+              {{/each}}
+            {{/if}}
+            
+            {{#if details.cisaExploitAdd}}
+              <h1 class="p-title">
+                CISA KEV Details
+              </h1>
+              <div>
+                <span class="p-key">CISA Known Exploit Date Added: </span>
+                <span class="p-value">{{details.cisaExploitAdd}}</span>
+              </div>
+              <div>
+                <span class="p-key">CISA Action Due Date: </span>
+                <span class="p-value">{{details.cisaActionDue}}</span>
+              </div>
+              <div>
+                <span class="p-key">CISA Action Required: </span>
+                <span class="p-value">{{details.cisaRequiredAction}}</span>
+              </div>
+              <div>
+                <span class="p-key">CISA Vulnerability Name: </span>
+                <span class="p-value">{{details.cisaVulnerabilityName}}</span>
+              </div>
+            {{/if}}
+            <h1 class="p-title">
+              Common Platform Enumeration
+            </h1>
+            {{#if details.vcVulnerableCPEs}}
+              <div class="scrollable-container">
+                {{#each details.vendors as |vendor|}}
+                  <span class="pulse-tag">{{vendor}}</span>
+                {{/each}}
+                {{#each details.products as |product|}}
+                  <span class="pulse-tag">{{product}}</span>
+                {{/each}}
+              </div>
+              {{#if block._state.showCPE}}
+                <div class="p-action mt-1" {{action "toggleCPE"}}>
+                  Hide CPEs
+                  {{fa-icon icon="caret-up" fixedWidth=true}}
+                  ({{details.vcVulnerableCPEs.length}})
+                </div>
+              {{else}}
+                <div class="p-action mt-1" {{action "toggleCPE"}}>
+                  Show CPEs
+                  {{fa-icon "caret-down" fixedWidth=true}}
+                  ({{details.vcVulnerableCPEs.length}})
+                </div>
+              {{/if}}
+
+              {{#each cpeToShow as |cpe|}}
+                <div>
+                  <span class="p-value">{{cpe}}</span>
+                </div>
+              {{/each}}
+            {{else}}
+              <div>
+                <span class="p-value">No CPEs reported</span>
+              </div>
+            {{/if}}
+            <h1 class="p-title">
+              References
+            </h1>
+            {{#if details.references}}
+              {{#if block._state.showReferences}}
+                <div class="p-action mt-1" {{action "toggleReferences"}}>
+                  Hide References
+                  {{fa-icon icon="caret-up" fixedWidth=true}}
+                  ({{details.references.length}})
+                </div>
+              {{else}}
+                <div class="p-action mt-1" {{action "toggleReferences"}}>
+                  Show All References
+                  {{fa-icon "caret-down" fixedWidth=true}}
+                  ({{details.references.length}})
+                </div>
+              {{/if}}           
+                {{#each referencesToShow as |reference|}}
+                  <div class="link-list-item">
+                    <span class="p-value">
+                      <a href="{{reference.url}}">{{reference.url}}</a>
+                    </span>
+                  </div>
+                {{/each}}
+            {{/if}}
+          </div>
+        </div>
+      {{/if}}
+    {{/if}}
+  {{/if}}
+
+  {{#if (eq activeTab "exploits")}}
+    <div>
+      <div class="p-title">
+        Exploits
+      </div>
+      {{#if block._state.loadingExploits}}
+        <div>
+          {{fa-icon icon="spinner-third" fixedWidth=true spin=true}} Fetching Exploit Data
+        </div>
+      {{else}}
+        {{#if showExploits}}
+          <span class="p-title">{{fa-icon "bug" fixedWidth=true}}VulnCheck Reported Exploit References</span>
+          {{#if block._state.showExploitReferences}}
+            <div class="p-action mt-1" {{action "toggleExploitReferences"}}>
+              Hide Exploit References
+              {{fa-icon icon="caret-up" fixedWidth=true}}
+              ({{details.exploitsData.data.0.vulncheck_reported_exploitation.length}})
+            </div>
+          {{else}}
+            <div class="p-action mt-1 mb-1" {{action "toggleExploitReferences"}}>
+              Show All Exploit References
+              ({{details.exploitsData.data.0.vulncheck_reported_exploitation.length}})
+              {{fa-icon "caret-down" fixedWidth=true}}
+            </div>
+          {{/if}}
+          <div>
+            {{#if details.exploitsData.data.0.vulncheck_reported_exploitation}}
+                {{#each exploitReferencesToShow as |exploit_reference|}}
+                  <div class="link-list-item">
+                    <a href="{{exploit_reference.url}}" target="_blank">{{exploit_reference.url}}</a>
+                  </div>
+                {{/each}}
+            {{else}}
+              No Reported Exploit References.
+            {{/if}}
+          </div>
+          <div>
+            <span class="p-title">{{fa-icon "bug" fixedWidth=true}}VulnCheck XDB</span>
+            {{#if details.exploitsData.data.0.vulncheck_xdb}}
+              {{#if block._state.showExploits}}
+                <div class="p-action mt-1 mb-1" {{action "toggleExploits"}}>
+                  Hide Exploit(s)
+                  ({{details.exploitsData.data.0.vulncheck_xdb.length}})
+                  {{fa-icon icon="caret-up" fixedWidth=true}}
+                </div>
+              {{else}}
+                <div class="p-action mt-1 mb-1" {{action "toggleExploits"}}>
+                  Show All Exploit(s)
+                  ({{details.exploitsData.data.0.vulncheck_xdb.length}})
+                  {{fa-icon "caret-down" fixedWidth=true}}
+                </div>
+              {{/if}}
+              {{#each exploitsToShow as |exploit|}}
+                <table class="p-table fixed-width-table">
+                  <tbody>
+                    <tr>
+                      <td>XDB ID</td>
+                      <td>{{exploit.xdb_id}}</td>
+                    </tr>
+                    <tr>
+                      <td>XDB URL</td>
+                      <td><a href="{{exploit.xdb_url}}" target="_blank" rel="noopener noreferrer">{{exploit.xdb_url}}</a></td>
+                    </tr>
+                    <tr>
+                      <td>Date Added</td>
+                      <td>{{exploit.date_added}}</td>
+                    </tr>
+                    <tr>
+                      <td>Exploit Type</td>
+                      <td>{{exploit.exploit_type}}</td>
+                    </tr>
+                    <tr>
+                      <td>Clone SSH URL</td>
+                      <td>{{exploit.clone_ssh_url}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <br>
+              {{/each}}
+            {{else}}
+              <div>
+                No Exploits Found.
+              </div>
+            {{/if}}
+          </div>
+        {{/if}}
+      {{/if}}
+    </div>
+  {{/if}}
+  {{#if (eq activeTab "threatActors")}}
+    <div>
+      <div class="p-title">Threat Actor Attribution</div>
+      {{#if block._state.loadingThreatActors}}
+        <div>
+          {{fa-icon icon="spinner-third" fixedWidth=true spin=true}} Fetching Threat Actor Data
+        </div>
+      {{else}}          
+        {{#if (gt details.threatActorsData.length 0)}}
+          <div>
+            {{#each details.threatActorsData as |threat_actor|}}
+              <div class="actor-container">
+                <div class="p-title mt-0">
+                  {{threat_actor.threat_actor_name}}
+                </div>
+                {{#if threat_actor.misp_threat_actor.description}}
+                  <div>
+                    {{threat_actor.misp_threat_actor.description}}
+                  </div>
+                {{/if}}
+                {{#if threat_actor.country}}
+                  <div>
+                    <span class="p-key">Source Country: </span>
+                    <span class="p-value">{{threat_actor.country}}</span>
+                  </div>
+                {{/if}}
+
+                {{#if threat_actor.mitre_attack_group.aliases}}
+                  <div>
+                    <h3 class="p-title">MITRE Aliases</h3>
+                    <div class="scrollable-container">
+                      {{#each threat_actor.mitre_attack_group.aliases as |alias|}}
+                        <span class="pulse-tag">{{alias}}</span>
+                      {{/each}}
+                    </div>
+                  </div>
+                {{/if}}
+                {{#if threat_actor.vendors_and_products_targeted}}
+                <div>
+                  <h3 class="p-title">Targeted Vendors and Products</h3>
+                    <div class="scrollable-container">
+                      {{#each threat_actor.vendors_and_products_targeted as |target|}}
+                        <span class="pulse-tag">{{target.vendor}} - {{target.product}}</span>
+                      {{/each}}
+                    </div>
+                </div>
+                {{#if threat_actor.malpedia_url}}
+                  <div>
+                    <h3 class="p-title">Malpedia URL</h3>
+                    <a href="{{threat_actor.malpedia_url}}" target="_blank">{{threat_actor.malpedia_url}}</a>
+                  </div>
+                {{/if}}
+                {{/if}}
+              </div>
+            {{/each}}
+          </div>
+        {{else}}
+          <div>
+            No Threat Actor Attribution Found.
+          </div>
+        {{/if}}
+      {{/if}}
+    </div>
+  {{/if}}
+</div>

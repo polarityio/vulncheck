@@ -1,38 +1,51 @@
 {
+  "polarityIntegrationUuid": "660b1ac0-680e-11f0-a0ca-69b4f2363791",
   "name": "VulnCheck",
   "acronym": "VC",
-  "description": "TODO",
-  "entityTypes": ["IPv4", "IPv6", "url", "domain", "cve", "email", "MAC"],
-  "defaultColor": "light-blue",
-  "onDemandOnly": true,
-  "styles": ["./client/styles.less"],
+  "description": "VulnCheck is a cyber threat intelligence provider that provides exploit and vulnerability intelligence to organizations",
+  "entityTypes": [
+    "cve"
+  ],
+  "styles": [
+    "./styles/vc.less"
+  ],
   "block": {
     "component": {
-      "file": "./client/block.js"
+      "file": "./components/vc-block.js"
     },
     "template": {
-      "file": "./client/block.hbs"
+      "file": "./templates/vc-block.hbs"
     }
   },
+  "defaultColor": "light-pink",
   "logging": {
     "level": "info"
   },
   "options": [
     {
-      "key": "url",
-      "name": "VulnChck API URL",
-      "description": "The base URL of the VulnChck API including the scheme (i.e., https://)",
-      "default": "",
+      "key": "subscriptionUrl",
+      "name": "VulnCheck API URL",
+      "description": "The base URL to the GreyNoise API you wish to use. Defaults to \"https://api.vulncheck.com/\".",
+      "default": "https://api.vulncheck.com/",
       "type": "text",
       "userCanEdit": false,
       "adminOnly": true
     },
     {
-      "key": "secretKey",
-      "name": "Secret Key",
-      "description": "Your Secret Key",
+      "key": "apiKey",
+      "name": "API Key",
+      "description": "Account API key used to access VulnCheck API.",
       "default": "",
       "type": "password",
+      "userCanEdit": false,
+      "adminOnly": true
+    },
+    {
+      "key": "premiumApi",
+      "name": "Search using the Premium API",
+      "description": "If checked, the integration will search indices available to premium subscription accountss.  When unchecked, the VulnCheck Community indices will be used (only supports CVE lookups)",
+      "default": false,
+      "type": "boolean",
       "userCanEdit": false,
       "adminOnly": true
     }
