@@ -1,6 +1,28 @@
 @riot-color: #7bc942;
 @border-color: #dee2e6;
 
+
+.link-list-item {
+  word-break: break-all;
+  padding: 5px 5px;
+  border-radius: 4px;
+  
+  &:hover {
+    background-color: #eee;
+  }
+}
+
+.actor-container {
+  border: 1px solid #e4e9f2;
+  padding: 4px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  
+  &:last-child {
+    margin-bottom: 0px;
+  }
+}
+
 pre {
   overflow-y: scroll;
   overflow-x: hidden;
@@ -19,7 +41,7 @@ pre {
 }
 
 .pulse-tag {
-  background-color: #dedede;
+  border: 1px solid #eee;
   border-radius: 4px;
   margin-bottom: 2px;
   padding: 3px;
@@ -48,9 +70,9 @@ pre {
   }
 }
 
-  table.fixed-width-table td:first-child {
-    width: 105px; /* Adjust this value to your desired width */
-  }
+table.fixed-width-table td:first-child {
+  width: 105px; /* Adjust this value to your desired width */
+}
 
 .category-pill {
   display: inline-block;
@@ -79,7 +101,21 @@ pre {
   }
 }
 
-.p-block{
+h2.p-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: #607d8b;
+  margin: 10px 0 3px 0;
+}
+
+h3.p-title {
+  font-size: 12px;
+  font-weight: 400;
+  color: #5a6268;
+}
+
+
+.p-block {
   margin-top: 5px;
   background-color: #eee;
   padding: 5px;
@@ -156,16 +192,13 @@ pre {
 
   .stripe-bg {
     color: white;
-    background: repeating-linear-gradient(
-      45deg,
-      @riot-color,
-      @riot-color 5px,
-      lighten(@riot-color, 5%) 5px,
-      lighten(@riot-color, 5%) 10px
-    ) !important;
+    background: repeating-linear-gradient(45deg,
+    @riot-color,
+    @riot-color 5px,
+    lighten(@riot-color, 5%) 5px,
+    lighten(@riot-color, 5%) 10px) !important;
   }
 }
-
 
 
 .copy-btn-container {

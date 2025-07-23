@@ -38,11 +38,11 @@ polarity.export = PolarityComponent.extend({
     }
     return references.slice(0, this.maxReferencesToShow);
   }),
-  exploitReferencesToShow: Ember.computed('block._state.showExploitRefercnes', function () {
+  exploitReferencesToShow: Ember.computed('block._state.showExploitReferences', function () {
     let exploitReferences;
     exploitReferences = this.get('details.exploitsData.data.0.vulncheck_reported_exploitation');
 
-    if (this.get('block._state.showExploitRefercnes')) {
+    if (this.get('block._state.showExploitReferences')) {
       return exploitReferences;
     }
     return exploitReferences.slice(0, this.maxReferencesToShow);
@@ -76,7 +76,7 @@ polarity.export = PolarityComponent.extend({
     this.set('block._state.loadingExploits', true);
     this.sendIntegrationMessage(payload)
       .then((exploitsData) => {
-        this.set('block.data.details.exploitsData', JSON.parse(exploitsData));
+        this.set('block.data.details.exploitsData', exploitsData);
         this.set('exploits', {});
         this.set('showExploits', true);
         this.set('block._state.loadedExploits', true);
@@ -97,7 +97,7 @@ polarity.export = PolarityComponent.extend({
     this.set('block._state.loadingThreatActors', true);
     this.sendIntegrationMessage(payload)
       .then((threatActorsData) => {
-        this.set('block.data.details.threatActorsData', JSON.parse(threatActorsData).data.sort((a, b) => {return a["threat_actor_name"].localeCompare(b["threat_actor_name"]);}));
+        this.set('block.data.details.threatActorsData', threatActorsData.data.sort((a, b) => {return a["threat_actor_name"].localeCompare(b["threat_actor_name"]);}));
         this.set('threatActors', {});
         this.set('showThreatActors', true);
         this.set('block._state.loadedThreatActors', true);
@@ -117,7 +117,7 @@ polarity.export = PolarityComponent.extend({
       this.toggleProperty('block._state.showReferences');
     },
     toggleExploitReferences: function () {
-      this.toggleProperty('block._state.showExploitRefercnes');
+      this.toggleProperty('block._state.showExploitReferences');
     },
     toggleExploits: function () {
       this.toggleProperty('block._state.showExploits');

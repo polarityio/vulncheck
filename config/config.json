@@ -3,7 +3,6 @@
   "acronym": "VC",
   "description": "VulnCheck is a cyber threat intelligence provider that provides exploit and vulnerability intelligence to organizations",
   "entityTypes": [
-    "IPv4",
     "cve"
   ],
   "styles": [
@@ -15,14 +14,6 @@
     },
     "template": {
       "file": "./templates/vc-block.hbs"
-    }
-  },
-  "summary": {
-    "component": {
-      "file": "./components/summary.js"
-    },
-    "template": {
-      "file": "./templates/summary.hbs"
     }
   },
   "defaultColor": "light-pink",
@@ -52,8 +43,8 @@
       "description": "Account API key used to access VulnCheck API.",
       "default": "",
       "type": "password",
-      "userCanEdit": true,
-      "adminOnly": false
+      "userCanEdit": false,
+      "adminOnly": true
     },
     {
       "key": "premiumApi",
@@ -61,8 +52,8 @@
       "description": "If checked, the integration will search indices available to premium subscription accountss.  When unchecked, the VulnCheck Community indices will be used (only supports CVE lookups)",
       "default": false,
       "type": "boolean",
-      "userCanEdit": true,
-      "adminOnly": false
+      "userCanEdit": false,
+      "adminOnly": true
     }
   ]
 }
