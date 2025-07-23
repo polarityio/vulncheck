@@ -102,14 +102,17 @@ async function onMessage(payload, options, cb) {
         Logger.trace({ exploits }, 'GET_EXPLOITS');
         cb(null, exploits);
       } catch (error) {
+        Logger.error(error, 'Error fetching exploits');
         cb(error);
       }
       break;
     case 'GET_THREAT_ACTORS':
       try {
         const threatActors = await getThreatActors(entity, options);
+        Logger.trace({ threatActors }, 'GET_THREAT_ACTORS');
         cb(null, threatActors);
       } catch (error) {
+        Logger.error(error, 'error fetching threat actors');
         cb(error);
       }
       break;
