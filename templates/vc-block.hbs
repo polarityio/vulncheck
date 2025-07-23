@@ -51,7 +51,7 @@
         <h1 class="p-title">{{fa-icon icon="info" fixedWidth=true}} API Limit Hit</h1>
       {{else}}
         <div id={{concat "cve-container-" uniqueIdPrefix}}>
-          <span class="p-title">{{fa-icon "clipboard" fixedWidth=true}} VulnCheck Community Summary</span>
+          <span class="p-title">VulnCheck Community Summary</span>
           <div class="mb-2">
             {{#if details.vulnStatus}}
               <div>
@@ -85,7 +85,7 @@
             {{/if}}
             {{#if details.metrics.cvssMetricV40}}
               <div>
-                <span class="p-title">{{fa-icon "clipboard" fixedWidth=true}} CVSS v4 Details</span>
+                <span class="p-title">CVSS v4 Details</span>
                 <span class="p-key">CVSS Base Score: </span>
                 <span class="p-value">{{details.metrics.cvssMetricV40.0.cvssData.baseScore}}</span>
                 <br>
@@ -97,7 +97,7 @@
               </div>
             {{else if details.metrics.cvssMetricV31}}
               <div>
-                <span class="p-title">{{fa-icon "clipboard" fixedWidth=true}} CVSS v3.1 Details</span>
+                <span class="p-title">CVSS v3.1 Details</span>
                 <span class="p-key">CVSS Base Score: </span>
                 <span class="p-value">{{details.metrics.cvssMetricV31.0.cvssData.baseScore}}</span>
                 <br>
@@ -115,7 +115,7 @@
               </div>
             {{else if details.cvssV2Data}}
               <div>
-                <span class="p-title">{{fa-icon "clipboard" fixedWidth=true}} CVSS v2 Details</span>
+                <span class="p-title">CVSS v2 Details</span>
               </div>
               {{#each details.cvssV2Data}}
                 <div>
@@ -124,29 +124,29 @@
                 </div>
               {{/each}}
             {{/if}}
-            <br>
+            
             {{#if details.cisaExploitAdd}}
-              <h1 class="p-title m-0">
-                {{fa-icon "skull" fixedWidth=true}}
+              <h1 class="p-title">
                 CISA KEV Details
               </h1>
               <div>
                 <span class="p-key">CISA Known Exploit Date Added: </span>
                 <span class="p-value">{{details.cisaExploitAdd}}</span>
-                <br>
+              </div>
+              <div>
                 <span class="p-key">CISA Action Due Date: </span>
                 <span class="p-value">{{details.cisaActionDue}}</span>
-                <br>
+              </div>
+              <div>
                 <span class="p-key">CISA Action Required: </span>
                 <span class="p-value">{{details.cisaRequiredAction}}</span>
-                <br>
+              </div>
+              <div>
                 <span class="p-key">CISA Vulnerability Name: </span>
                 <span class="p-value">{{details.cisaVulnerabilityName}}</span>
               </div>
-              <br>
             {{/if}}
-            <h1 class="p-title m-0">
-              {{fa-icon "clipboard" fixedWidth=true}}
+            <h1 class="p-title">
               Common Platform Enumeration
             </h1>
             {{#if details.vcVulnerableCPEs}}
@@ -182,9 +182,7 @@
                 <span class="p-value">No CPEs reported</span>
               </div>
             {{/if}}
-            <br>
-            <h1 class="p-title m-0">
-              {{fa-icon "clipboard" fixedWidth=true}}
+            <h1 class="p-title">
               References
             </h1>
             {{#if details.references}}
@@ -196,20 +194,20 @@
                 </div>
               {{else}}
                 <div class="p-action mt-1" {{action "toggleReferences"}}>
-                  Show References
+                  Show All References
                   {{fa-icon "caret-down" fixedWidth=true}}
                   ({{details.references.length}})
                 </div>
               {{/if}}
-              <ul>
+           
                 {{#each referencesToShow as |reference|}}
-                  <div>
+                  <div class="link-list-item">
                     <span class="p-value">
-                      <li><a href="{{reference.url}}">{{reference.url}}</a></li>
+                      <a href="{{reference.url}}">{{reference.url}}</a>
                     </span>
                   </div>
                 {{/each}}
-              </ul>
+            
             {{/if}}
           </div>
         </div>
@@ -270,26 +268,26 @@
                 </div>
               {{/if}}
               {{#each exploitsToShow as |exploit|}}
-                <table border="1" cellpadding="5" cellspacing="0" class="fixed-width-table">
+                <table class="p-table fixed-width-table">
                   <tbody>
                     <tr>
-                      <td>XDB ID:</td>
-                      <td><code>{{exploit.xdb_id}}</code></td>
+                      <td>XDB ID</td>
+                      <td>{{exploit.xdb_id}}</td>
                     </tr>
                     <tr>
-                      <td>XDB URL:</td>
+                      <td>XDB URL</td>
                       <td><a href="{{exploit.xdb_url}}" target="_blank" rel="noopener noreferrer">{{exploit.xdb_url}}</a></td>
                     </tr>
                     <tr>
-                      <td>Date Added:</td>
+                      <td>Date Added</td>
                       <td>{{exploit.date_added}}</td>
                     </tr>
                     <tr>
-                      <td>Exploit Type:</td>
+                      <td>Exploit Type</td>
                       <td>{{exploit.exploit_type}}</td>
                     </tr>
                     <tr>
-                      <td>Clone SSH URL:</td>
+                      <td>Clone SSH URL</td>
                       <td>{{exploit.clone_ssh_url}}</td>
                     </tr>
                   </tbody>
