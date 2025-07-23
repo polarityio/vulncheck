@@ -6,10 +6,12 @@
     </button>
     <div class="copy-success-message {{if showCopyMessage 'visible' 'hidden'}}">
       {{fa-icon icon="check" fixedWidth=true class="copy-success-icon"}}
-      {{#if (eq block._state.activeTab "activity")}}
-        Copied Observed Activity
+      {{#if (eq activeTab "details")}}
+        Copied Details Data
+      {{else if (eq activeTab "exploits")}}
+        Copied Exploit Data
       {{else}}
-        Copied Information
+        Copied Threat Actor Data
       {{/if}}
     </div>
   </div>
@@ -50,8 +52,8 @@
       {{#if details.limitHit}}
         <h1 class="p-title">{{fa-icon icon="info" fixedWidth=true}} API Limit Hit</h1>
       {{else}}
-        <div id={{concat "cve-container-" uniqueIdPrefix}}>
-          <span class="p-title">VulnCheck Community Summary</span>
+        <div>
+          <span class="p-title">VulnCheck Summary</span>
           <div class="mb-2">
             {{#if details.vulnStatus}}
               <div>
@@ -198,8 +200,7 @@
                   {{fa-icon "caret-down" fixedWidth=true}}
                   ({{details.references.length}})
                 </div>
-              {{/if}}
-           
+              {{/if}}           
                 {{#each referencesToShow as |reference|}}
                   <div class="link-list-item">
                     <span class="p-value">
@@ -207,7 +208,6 @@
                     </span>
                   </div>
                 {{/each}}
-            
             {{/if}}
           </div>
         </div>
@@ -216,7 +216,7 @@
   {{/if}}
 
   {{#if (eq activeTab "exploits")}}
-    <div id={{concat "cve-container-" uniqueIdPrefix}}>
+    <div>
       <div class="p-title">
         Exploits
       </div>
@@ -305,7 +305,7 @@
     </div>
   {{/if}}
   {{#if (eq activeTab "threatActors")}}
-    <div id={{concat "cve-container-" uniqueIdPrefix}}>
+    <div>
       <div class="p-title">Threat Actor Attribution</div>
       {{#if block._state.loadingThreatActors}}
         <div>

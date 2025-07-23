@@ -56,7 +56,7 @@ polarity.export = PolarityComponent.extend({
     }
     return exploits.slice(0, this.maxReferencesToShow);
   }),
-  init () {
+  init() {
     if (!this.get('block._state')) {
       this.set('block._state', {});
       this.set('block._state.activeTab', 'info');
@@ -97,7 +97,12 @@ polarity.export = PolarityComponent.extend({
     this.set('block._state.loadingThreatActors', true);
     this.sendIntegrationMessage(payload)
       .then((threatActorsData) => {
-        this.set('block.data.details.threatActorsData', threatActorsData.data.sort((a, b) => {return a["threat_actor_name"].localeCompare(b["threat_actor_name"]);}));
+        this.set(
+          'block.data.details.threatActorsData',
+          threatActorsData.data.sort((a, b) => {
+            return a['threat_actor_name'].localeCompare(b['threat_actor_name']);
+          })
+        );
         this.set('threatActors', {});
         this.set('showThreatActors', true);
         this.set('block._state.loadedThreatActors', true);
@@ -144,30 +149,24 @@ polarity.export = PolarityComponent.extend({
       }
     },
     copyData: function () {
-      const savedShowAllTags = this.get('block._state.showAllTags');
-      const savedActiveTab = this.get('block._state.activeTab');
+      let containerId = `vulncheck-container-${this.get('uniqueIdPrefix')}`;
+      let savedShowReferences = this.get('block._state.showReferences');
+      let savedShowExploitReferences = this.get('block._state.showExploitReferences');
+      let savedShowExploits = this.get('block._state.showExploits');
 
-      let containerId = null;
-
-      const idTypes = {
-        info: `information-container-${this.get('uniqueIdPrefix')}`,
-        activity: `activity-container-${this.get('uniqueIdPrefix')}`
-      };
-
-      if (this.get('block.userOptions.subscriptionApi')) {
-        if (this.get('block.entity.type') === 'cve') {
-          containerId = `cve-container-${this.get('uniqueIdPrefix')}`;
-        } else {
-          containerId = idTypes[this.get('block._state.activeTab')];
-        }
-      } else {
-        containerId = `community-container-${this.get('uniqueIdPrefix')}`;
-      }
-
-      this.set('block._state.showAllTags', true);
+      this.set('block._state.showReferences', true);
+      this.set('block._state.showExploitReferences', true);
+      this.set('block._state.showExploits', true);
 
       Ember.run.scheduleOnce('afterRender', this, this.copyElementToClipboard, containerId);
-      Ember.run.scheduleOnce('destroy', this, this.restoreCopyState, savedActiveTab, savedShowAllTags);
+      Ember.run.scheduleOnce(
+        'destroy',
+        this,
+        this.restoreCopyState,
+        savedShowReferences,
+        savedShowExploitReferences,
+        savedShowExploits
+      );
     },
     toggleExpandableTitle: function (index) {
       const modifiedExpandableTitleStates = Object.assign({}, this.get('expandableTitleStates'), {
@@ -176,7 +175,7 @@ polarity.export = PolarityComponent.extend({
       this.set(`expandableTitleStates`, modifiedExpandableTitleStates);
     }
   },
-  copyElementToClipboard (element) {
+  copyElementToClipboard(element) {
     window.getSelection().removeAllRanges();
     let range = document.createRange();
 
@@ -185,11 +184,12 @@ polarity.export = PolarityComponent.extend({
     document.execCommand('copy');
     window.getSelection().removeAllRanges();
   },
-  restoreCopyState (savedActiveTab, savedShowAllTags) {
-    this.set('activeTab', savedActiveTab);
+  restoreCopyState(savedShowReferences, savedShowExploitReferences, savedShowExploits) {
     this.set('showCopyMessage', true);
 
-    this.set('block._state.showAllTags', savedShowAllTags);
+    this.set('block._state.showReferences', savedShowReferences);
+    this.set('block._state.showExploitReferences', savedShowExploitReferences);
+    this.set('block._state.showExploits', savedShowExploits);
 
     setTimeout(() => {
       if (!this.isDestroyed) {
