@@ -25,7 +25,7 @@
     {
       "key": "subscriptionUrl",
       "name": "VulnCheck API URL",
-      "description": "The base URL to the GreyNoise API you wish to use. Defaults to \"https://api.vulncheck.com/\".",
+      "description": "The base URL to the VulnCheck API you wish to use. Defaults to \"https://api.vulncheck.com/\".",
       "default": "https://api.vulncheck.com/",
       "type": "text",
       "userCanEdit": false,
@@ -43,7 +43,7 @@
     {
       "key": "premiumApi",
       "name": "Search using the Premium API",
-      "description": "If checked, the integration will search indices available to premium subscription accountss.  When unchecked, the VulnCheck Community indices will be used (only supports CVE lookups)",
+      "description": "If checked, the integration will search indices available to premium subscription accounts.  When unchecked, the VulnCheck Community indices will be used (only supports CVE lookups)",
       "default": false,
       "type": "boolean",
       "userCanEdit": false,
