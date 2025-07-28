@@ -14,7 +14,7 @@ To learn more about VulnCheck, please visit the [official website](https://vulnc
 ## VulnCheck Integration Options
 
 ### VulnCheck API URL
-The base URL to the GreyNoise API you wish to use. Defaults to `https://api.vulncheck.com/`.
+The base URL to the VulnCheck API you wish to use. Defaults to `https://api.vulncheck.com/`.
 
 ### API Key
 Account API key used to access VulnCheck API.
