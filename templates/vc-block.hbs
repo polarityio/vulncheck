@@ -225,7 +225,6 @@
           {{fa-icon icon="spinner-third" fixedWidth=true spin=true}} Fetching Exploit Data
         </div>
       {{else}}
-        {{#if showExploits}}
           <span class="p-title">{{fa-icon "bug" fixedWidth=true}}VulnCheck Reported Exploit References</span>
           {{#if block._state.showExploitReferences}}
             <div class="p-action mt-1" {{action "toggleExploitReferences"}}>
@@ -300,7 +299,6 @@
               </div>
             {{/if}}
           </div>
-        {{/if}}
       {{/if}}
     </div>
   {{/if}}
