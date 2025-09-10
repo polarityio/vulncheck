@@ -37,6 +37,27 @@ function _createJsonErrorPayload(msg, pointer, httpCode, code, title, meta) {
   };
 }
 
+function _createJsonErrorObject(msg, pointer, httpCode, code, title, meta) {
+  let error = {
+    detail: msg,
+    status: httpCode.toString(),
+    title: title,
+    code: 'ES_' + code.toString()
+  };
+
+  if (pointer) {
+    error.source = {
+      pointer: pointer
+    };
+  }
+
+  if (meta) {
+    error.meta = meta;
+  }
+
+  return error;
+}
+
 const parseDescription = (rawDescription) => {
   try {
     return _.filter(rawDescription.body.data[0].descriptions, {
@@ -104,6 +125,9 @@ async function doLookup(entities, options, cb) {
 }
 
 async function onMessage(payload, options, cb) {
+  options.subscriptionUrl = options.subscriptionUrl.endsWith('/')
+    ? options.subscriptionUrl
+    : options.subscriptionUrl + '/';
   const { entity, action } = payload;
   switch (action) {
     case 'GET_EXPLOITS':
@@ -396,7 +420,7 @@ const getSummaryTags = (data) => {
       tags.push(`Product: ${[...new Set(productTags)][0]} + ${[...new Set(productTags)].length - 1}`);
     }
   }
-  
+
   if (tags.length === 0) {
     tags.push(data.body.data[0].id);
   }
