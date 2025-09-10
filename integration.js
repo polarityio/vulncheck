@@ -37,6 +37,37 @@ function _createJsonErrorPayload(msg, pointer, httpCode, code, title, meta) {
   };
 }
 
+function _createJsonErrorObject(msg, pointer, httpCode, code, title, meta) {
+  let error = {
+    detail: msg,
+    status: httpCode.toString(),
+    title: title,
+    code: 'ES_' + code.toString()
+  };
+
+  if (pointer) {
+    error.source = {
+      pointer: pointer
+    };
+  }
+
+  if (meta) {
+    error.meta = meta;
+  }
+
+  return error;
+}
+
+const parseDescription = (rawDescription) => {
+  try {
+    return _.filter(rawDescription.body.data[0].descriptions, {
+      lang: 'en'
+    })[0].value;
+  } catch (e) {
+    return 'N/A';
+  }
+};
+
 function _handleRequestError(err, response, body, options, cb) {
   if (err) {
     cb(
@@ -94,6 +125,9 @@ async function doLookup(entities, options, cb) {
 }
 
 async function onMessage(payload, options, cb) {
+  options.subscriptionUrl = options.subscriptionUrl.endsWith('/')
+    ? options.subscriptionUrl
+    : options.subscriptionUrl + '/';
   const { entity, action } = payload;
   switch (action) {
     case 'GET_EXPLOITS':
@@ -220,7 +254,7 @@ const getVulnInfo = (entities, usePremium, options, cb) => {
     }
 
     results.forEach((result) => {
-      if (result.body === null || result.body.length === 0) {
+      if (result.body.data[0] === null || result.body.data[0].length === 0) {
         lookupResults.push({
           entity: result.entity,
           data: null
@@ -232,13 +266,11 @@ const getVulnInfo = (entities, usePremium, options, cb) => {
             summary: getSummaryTags(result),
             details: {
               ...result.body.data[0],
-              description: _.filter(result.body.data[0].descriptions, {
-                lang: 'en'
-              })[0].value,
-              sourceIdentifier: result.body.data[0].sourceIdentifier,
-              vulnStatus: result.body.data[0].vulnStatus,
-              published: result.body.data[0].published,
-              lastModified: result.body.data[0].lastModified,
+              description: parseDescription(result),
+              sourceIdentifier: _.get(result, 'body.data[0].sourceIdentifier', 'N/A'),
+              vulnStatus: _.get(result, 'body.data[0].vulnStatus', 'N/A'),
+              published: _.get(result, 'body.data[0].published', 'N/A'),
+              lastModified: _.get(result, 'body.data[0].lastModified', 'N/A'),
               vendors: getUniqueCPEVendors(result.body.data[0].vcVulnerableCPEs),
               products: getUniqueCPEProducts(result.body.data[0].vcVulnerableCPEs),
               apiService: usePremium ? 'premium' : 'community'
@@ -353,7 +385,7 @@ const getUniqueCPEProducts = (data) => {
 const getSummaryTags = (data) => {
   let tags = [];
 
-  if (!data) {
+  if (!data.body.data[0]) {
     return ['CVE has not been reported'];
   }
 
@@ -388,6 +420,11 @@ const getSummaryTags = (data) => {
       tags.push(`Product: ${[...new Set(productTags)][0]} + ${[...new Set(productTags)].length - 1}`);
     }
   }
+
+  if (tags.length === 0) {
+    tags.push(data.body.data[0].id);
+  }
+
   return tags;
 };
 

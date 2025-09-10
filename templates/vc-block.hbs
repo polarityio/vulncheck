@@ -201,13 +201,22 @@
                   ({{details.references.length}})
                 </div>
               {{/if}}           
-                {{#each referencesToShow as |reference|}}
-                  <div class="link-list-item">
-                    <span class="p-value">
-                      <a href="{{reference.url}}">{{reference.url}}</a>
-                    </span>
-                  </div>
-                {{/each}}
+              {{#each referencesToShow as |reference|}}
+                <div class="link-list-item">
+                  <span class="p-value">
+                    <a href="{{reference.url}}">{{reference.url}}</a>
+                  </span>
+                </div>
+              {{/each}}
+              {{#if block._state.showReferences}}
+                <div class="p-footnote">
+                  Showing all {{details.references.length}} references
+                </div>
+              {{else}}
+                <div class="p-footnote">
+                  Showing {{maxReferencesToShow}} of {{details.references.length}} references
+                </div>
+              {{/if}}
             {{/if}}
           </div>
         </div>
@@ -225,20 +234,21 @@
           {{fa-icon icon="spinner-third" fixedWidth=true spin=true}} Fetching Exploit Data
         </div>
       {{else}}
-        {{#if showExploits}}
           <span class="p-title">{{fa-icon "bug" fixedWidth=true}}VulnCheck Reported Exploit References</span>
-          {{#if block._state.showExploitReferences}}
-            <div class="p-action mt-1" {{action "toggleExploitReferences"}}>
-              Hide Exploit References
-              {{fa-icon icon="caret-up" fixedWidth=true}}
-              ({{details.exploitsData.data.0.vulncheck_reported_exploitation.length}})
-            </div>
-          {{else}}
-            <div class="p-action mt-1 mb-1" {{action "toggleExploitReferences"}}>
-              Show All Exploit References
-              ({{details.exploitsData.data.0.vulncheck_reported_exploitation.length}})
-              {{fa-icon "caret-down" fixedWidth=true}}
-            </div>
+          {{#if details.exploitsData.data.0.vulncheck_reported_exploitation}}
+            {{#if block._state.showExploitReferences}}
+              <div class="p-action mt-1" {{action "toggleExploitReferences"}}>
+                Hide Exploit References
+                {{fa-icon icon="caret-up" fixedWidth=true}}
+                ({{details.exploitsData.data.0.vulncheck_reported_exploitation.length}})
+              </div>
+            {{else}}
+              <div class="p-action mt-1 mb-1" {{action "toggleExploitReferences"}}>
+                Show All Exploit References
+                ({{details.exploitsData.data.0.vulncheck_reported_exploitation.length}})
+                {{fa-icon "caret-down" fixedWidth=true}}
+              </div>
+            {{/if}}
           {{/if}}
           <div>
             {{#if details.exploitsData.data.0.vulncheck_reported_exploitation}}
@@ -247,6 +257,15 @@
                     <a href="{{exploit_reference.url}}" target="_blank">{{exploit_reference.url}}</a>
                   </div>
                 {{/each}}
+                {{#if block._state.showExploitReferences}}
+                  <div class="p-footnote">
+                    Showing all {{details.exploitsData.data.0.vulncheck_reported_exploitation.length}} references
+                  </div>
+                {{else}}
+                  <div class="p-footnote">
+                    Showing {{maxReferencesToShow}} of {{details.exploitsData.data.0.vulncheck_reported_exploitation.length}} references
+                  </div>
+                {{/if}}
             {{else}}
               No Reported Exploit References.
             {{/if}}
@@ -256,13 +275,13 @@
             {{#if details.exploitsData.data.0.vulncheck_xdb}}
               {{#if block._state.showExploits}}
                 <div class="p-action mt-1 mb-1" {{action "toggleExploits"}}>
-                  Hide Exploit(s)
+                  Hide Exploit{{#if (gt details.exploitsData.data.0.vulncheck_xdb.length 1)}}s{{/if}}
                   ({{details.exploitsData.data.0.vulncheck_xdb.length}})
                   {{fa-icon icon="caret-up" fixedWidth=true}}
                 </div>
               {{else}}
                 <div class="p-action mt-1 mb-1" {{action "toggleExploits"}}>
-                  Show All Exploit(s)
+                  Show All Exploit{{#if (gt details.exploitsData.data.0.vulncheck_xdb.length 1)}}s{{/if}}
                   ({{details.exploitsData.data.0.vulncheck_xdb.length}})
                   {{fa-icon "caret-down" fixedWidth=true}}
                 </div>
@@ -294,13 +313,21 @@
                 </table>
                 <br>
               {{/each}}
+              {{#if block._state.showExploits}}
+                <div class="p-footnote">
+                  Showing all {{details.exploitsData.data.0.vulncheck_xdb.length}} references
+                </div>
+              {{else}}
+                <div class="p-footnote">
+                  Showing {{maxReferencesToShow}} of {{details.exploitsData.data.0.vulncheck_xdb.length}} references
+                </div>
+              {{/if}}
             {{else}}
               <div>
                 No Exploits Found.
               </div>
             {{/if}}
           </div>
-        {{/if}}
       {{/if}}
     </div>
   {{/if}}
