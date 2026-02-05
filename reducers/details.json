@@ -1,0 +1,66 @@
+{
+  "root": {
+    "path": "",
+    "on_null": "return_empty"
+  },
+  "pipeline": [
+    {
+      "op": "copy",
+      "from": "vulnStatus",
+      "to": "reduced_results.vuln_status"
+    },
+    {
+      "op": "copy",
+      "from": "metrics.cvssMetricV31[0].cvssData.baseScore",
+      "to": "reduced_results.cvss_base_score"
+    },
+    {
+      "op": "copy",
+      "from": "vcVulnerableCPEs",
+      "to": "reduced_results.vulnerable_cpes"
+    },
+    {
+      "op": "copy",
+      "from": "published",
+      "to": "reduced_results.published_date"
+    },
+    {
+      "op": "copy",
+      "from": "lastModified",
+      "to": "reduced_results.last_modified_date"
+    },
+    {
+      "op": "copy",
+      "from": "description",
+      "to": "reduced_results.vulnerability_description"
+    },
+    {
+      "op": "copy",
+      "from": "cisaRequiredAction",
+      "to": "reduced_results.cisa_required_action"
+    },
+    {
+      "op": "copy",
+      "from": "exploitsData.data[0].vulncheck_reported_exploitation",
+      "to": "reduced_results.reported_exploitation_urls"
+    },
+    {
+      "op": "copy",
+      "from": "exploitsData.data[0].vulncheck_xdb",
+      "to": "reduced_results.exploit_database_entries"
+    },
+    {
+      "op": "copy",
+      "from": "threatActorsData",
+      "to": "reduced_results.threat_actors"
+    },
+    {
+      "op": "prune",
+      "strategy": "empty_values",
+      "target": "reduced_results"
+    }
+  ],
+  "output": {
+    "result": "$working.reduced_results"
+  }
+}

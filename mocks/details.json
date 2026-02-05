@@ -1,0 +1,177 @@
+{
+  "id": "CVE-2024-9680",
+  "apiService": "premium",
+  "limitHit": false,
+  "vulnStatus": "Analyzed",
+  "sourceIdentifier": "security@mozilla.org",
+  "published": "2024-10-09T16:15:14.137Z",
+  "lastModified": "2024-12-18T19:43:05.257Z",
+  "description": "An attacker was able to achieve code execution in the content process by exploiting a use-after-free in Animation timelines. We have had reports of this vulnerability being exploited in the wild. This vulnerability affects Firefox < 131.0.2, Firefox ESR < 128.3.1, Firefox ESR < 115.16.1, Thunderbird < 131.0.1, Thunderbird < 128.3.1, and Thunderbird < 115.16.0.",
+  "metrics": {
+    "cvssMetricV40": [],
+    "cvssMetricV31": [
+      {
+        "source": "nvd@nist.gov",
+        "type": "Primary",
+        "cvssData": {
+          "version": "3.1",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+          "attackVector": "NETWORK",
+          "attackComplexity": "LOW",
+          "privilegesRequired": "NONE",
+          "userInteraction": "REQUIRED",
+          "scope": "UNCHANGED",
+          "confidentialityImpact": "HIGH",
+          "integrityImpact": "HIGH",
+          "availabilityImpact": "HIGH",
+          "baseScore": 8.8,
+          "baseSeverity": "HIGH"
+        },
+        "exploitabilityScore": 2.8,
+        "impactScore": 5.9
+      },
+      {
+        "source": "security@mozilla.org",
+        "type": "Secondary",
+        "cvssData": {
+          "version": "3.1",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "attackVector": "NETWORK",
+          "attackComplexity": "LOW",
+          "privilegesRequired": "NONE",
+          "userInteraction": "NONE",
+          "scope": "UNCHANGED",
+          "confidentialityImpact": "HIGH",
+          "integrityImpact": "HIGH",
+          "availabilityImpact": "HIGH",
+          "baseScore": 9.8,
+          "baseSeverity": "CRITICAL"
+        },
+        "exploitabilityScore": 3.9,
+        "impactScore": 5.9
+      }
+    ],
+    "cvssMetricV2": []
+  },
+  "weaknesses": [
+    {
+      "source": "nvd@nist.gov",
+      "type": "Primary",
+      "description": [
+        {
+          "lang": "en",
+          "value": "CWE-416"
+        }
+      ]
+    }
+  ],
+  "configurations": [],
+  "vcVulnerableCPEs": [
+    "cpe:2.3:a:mozilla:firefox:*:*:*:*:*:*:*:*",
+    "cpe:2.3:a:mozilla:firefox_esr:*:*:*:*:*:*:*:*",
+    "cpe:2.3:a:mozilla:thunderbird:*:*:*:*:*:*:*:*"
+  ],
+  "cisaExploitAdd": "2024-10-10",
+  "cisaActionDue": "2024-10-31",
+  "cisaRequiredAction": "Apply mitigations per vendor instructions or discontinue use of the product if mitigations are unavailable.",
+  "cisaVulnerabilityName": "Mozilla Firefox, Firefox ESR, and Thunderbird Use-After-Free Vulnerability",
+  "cisaNotes": "https://www.mozilla.org/en-US/security/advisories/mfsa2024-51/#CVE-2024-9680",
+  "vendors": [
+    "Mozilla"
+  ],
+  "products": [
+    "Firefox",
+    "Firefox ESR",
+    "Thunderbird"
+  ],
+  "references": [
+    {
+      "url": "https://bugzilla.mozilla.org/show_bug.cgi?id=1923344",
+      "source": "security@mozilla.org",
+      "tags": [
+        "Issue Tracking",
+        "Permissions Required"
+      ]
+    },
+    {
+      "url": "https://www.mozilla.org/security/advisories/mfsa2024-51/",
+      "source": "security@mozilla.org",
+      "tags": [
+        "Vendor Advisory"
+      ]
+    },
+    {
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2024-9680",
+      "source": "af854a3a-2127-422b-91ae-364da2661108",
+      "tags": [
+        "Third Party Advisory"
+      ]
+    }
+  ],
+  "exploitsData": {
+    "data": [
+      {
+        "vulncheck_reported_exploitation": [
+          {
+            "url": "https://www.mozilla.org/en-US/security/advisories/mfsa2024-51/#CVE-2024-9680",
+            "date_added": "2024-10-09"
+          },
+          {
+            "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+            "date_added": "2024-10-10"
+          }
+        ],
+        "vulncheck_xdb": [
+          {
+            "xdb_id": "f2a71e42e1c6",
+            "xdb_url": "https://vulncheck.com/xdb/f2a71e42e1c6",
+            "date_added": "2024-10-11T10:23:00Z",
+            "exploit_type": "initial-access",
+            "clone_ssh_url": "git@github.com:exploiter/firefox-uaf-poc.git",
+            "clone_https_url": "https://github.com/exploiter/firefox-uaf-poc.git",
+            "tags": [
+              "poc",
+              "use-after-free"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "threatActorsData": [
+    {
+      "threat_actor_name": "APT-C-36 (Blind Eagle)",
+      "misp_threat_actor": {
+        "uuid": "a3c5c5e5-8e5b-45c8-9c5e-5e5e5e5e5e5e",
+        "name": "Blind Eagle",
+        "description": "Blind Eagle is a South American threat group that has been active since at least 2018. The group primarily targets organizations in Colombia, Ecuador, Spain, and Panama."
+      },
+      "country": "Colombia",
+      "mitre_attack_group": {
+        "id": "G0099",
+        "name": "Blind Eagle",
+        "aliases": [
+          "Blind Eagle",
+          "APT-C-36"
+        ]
+      },
+      "vendors_and_products_targeted": [
+        {
+          "vendor": "Mozilla",
+          "product": "Firefox"
+        }
+      ],
+      "malpedia_url": "https://malpedia.caad.fkie.fraunhofer.de/actor/blind_eagle"
+    }
+  ],
+  "debugging_field_should_be_filtered": "This field should not appear in reduced output",
+  "internal_processing_metadata": {
+    "request_id": "req_123456",
+    "cache_hit": false,
+    "query_time_ms": 245
+  },
+  "raw_api_response_header": {
+    "status_code": 200,
+    "timestamp": "2024-12-20T10:30:00Z"
+  }
+}
